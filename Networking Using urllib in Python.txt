@@ -1,0 +1,2 @@
+
+Just contents of "romeo.txt".
