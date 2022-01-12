@@ -1,0 +1,61 @@
+import copy
+import random
+# Consider using the modules imported above.
+
+
+class Hat:
+    def __init__(self, **kwargs):
+        self.contents = []
+        nombres = list(kwargs.keys())
+        cantidad = list(kwargs.values())
+        for y in range(len(nombres)):
+            for x in range(cantidad[y]):
+                self.contents.append(nombres[y])
+
+    def draw(self, quitar_bolas):
+        quitadas = []
+        if quitar_bolas > len(self.contents):
+            return self.contents
+        else:
+            for x in range(quitar_bolas):
+                aleatorio = random.randrange(len(self.contents))
+                quitadas.append(self.contents.pop(aleatorio))
+            self.contents = self.contents
+            return sorted(quitadas)
+
+
+def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
+    n_quitados = []
+    for k, v in expected_balls.items():
+        for _ in range(v):
+            n_quitados.append(k)
+    filtro = []
+    for x in range(num_experiments):
+        copia = copy.deepcopy(hat)
+        result = copia.draw(num_balls_drawn)
+        diccionario_filtrado = {}
+        lista_nombres = []
+        for item in result:
+            k, v = f'{item}', result.count(item)
+            diccionario_filtrado[k] = v
+        name = list(diccionario_filtrado.keys())
+        canti = list(diccionario_filtrado.values())
+        for y in range(len(name)):
+            for x in range(canti[y]):
+                lista_nombres.append(name[y])
+        filtro.append(sorted(lista_nombres))
+
+    lll = 0
+    for xa in filtro:
+        ix = 0
+        res_while = []
+        while ix < len(n_quitados):
+            if n_quitados[ix] in xa:
+                xa.pop(xa.index(n_quitados[ix]))
+                res_while.append(True)
+            else:
+                res_while.append(False)
+            ix += 1
+        if False not in res_while:
+            lll += 1
+    return float(lll/num_experiments)
