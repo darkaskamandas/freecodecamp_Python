@@ -1,0 +1,2 @@
+
+It determines which pages are most highly connected.
